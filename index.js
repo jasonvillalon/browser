@@ -15,7 +15,7 @@ let cb = () => {
     })
   }
   // Initialize the router and begin the application
-  ReactDom.render(RouterComponent, document.getElementById("atomic-app"))
+  ReactDom.render(AppRouter, document.getElementById("atomic-app"))
 }
 // Ensure the DOM has finished loading ..
 if (document.readyState !== "loading") {
