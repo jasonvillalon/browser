@@ -1,7 +1,7 @@
 import ReactDom from "react-dom"
 import variables from "../variables"
 
-let RouterComponent = require(variables.RouterComponent)
+import AppRouter from "../AppRouter/index"
 
 let cb = () => {
   // Scroll to active element even o div
