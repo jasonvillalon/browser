@@ -1,9 +1,8 @@
 import ReactDom from "react-dom"
-import variables from "../variables"
 
 import AppRouter from "../AppRouter/index"
 
-let cb = () => {
+function cb() {
   // Scroll to active element even o div
   if (/Android 4\.[0-3]/.test(navigator.appVersion) || /Android 5\.[0-3]/.test(navigator.appVersion)) {
     window.addEventListener("resize", function() {
