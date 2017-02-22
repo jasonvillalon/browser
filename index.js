@@ -1,30 +1,29 @@
+import "systemjs-hot-reloader/default-listener.js"
+
+export function __reload(m) {
+  if (m.component.state) {
+    component.setState(m.component.state)
+  }
+}
+
+import React from "react"
 import ReactDom from "react-dom"
+import {Router, browserHistory} from "react-router"
 
 import AppRouter from "../AppRouter/index"
 
-function cb() {
-  // Scroll to active element even o div
-  if (/Android 4\.[0-3]/.test(navigator.appVersion) || /Android 5\.[0-3]/.test(navigator.appVersion)) {
-    window.addEventListener("resize", function() {
-      if (document.activeElement.tagName === "INPUT") {
-        window.setTimeout(function() {
-          document.activeElement.scrollIntoViewIfNeeded()
-        }, 0)
-      }
-    })
+const RenderForcer = React.createClass({
+  componentWillMount() {
+    // a little hack to help us rerender when this module is reloaded
+    this.forceUpdate()
+  },
+  render() {
+    return <div>
+      <Router history={browserHistory}>
+        {AppRouter}
+      </Router>
+    </div>
   }
-  // Initialize the router and begin the application
-  ReactDom.render(AppRouter, document.getElementById("atomic-app"))
-}
-// Ensure the DOM has finished loading ..
-if (document.readyState !== "loading") {
-  cb()
-} else if (document.addEventListener) {
-  document.addEventListener("DOMContentLoaded", cb)
-} else {
-  document.attachEvent("onreadystatechange", function() {
-    if (document.readyState !== "loading") {
-      cb()
-    }
-  })
-}
+})
+
+export let component = ReactDom.render(<RenderForcer />, document.getElementById("atomic-app"))
