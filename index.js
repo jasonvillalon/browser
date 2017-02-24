@@ -1,7 +1,7 @@
 import "systemjs-hot-reloader/default-listener.js"
 
 export function __reload(m) {
-  if (m.component.state) {
+  if (m && m.component.state) {
     component.setState(m.component.state)
   }
 }
