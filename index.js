@@ -1,34 +1,30 @@
 import React from "react"
-import ReactDom from "react-dom"
-import {Router, browserHistory} from "react-router"
+import ReactDOM from "react-dom"
+import App from "../AppRouter/index"
+import {AppContainer} from "react-hot-loader"
+import {overrideComponentTypeChecker} from "react-toolbox"
 
-import AppRouter from "../AppRouter/index"
+const rootEl = document.getElementById("app")
 
-const RenderForcer = React.createClass({
-  // componentWillMount() {
-  //   // a little hack to help us rerender when this module is reloaded
-  //   // this.forceUpdate()
-  // },
-  render() {
-    return <div>
-      <Router history={browserHistory}>
-        {AppRouter}
-      </Router>
-    </div>
+function render() {
+  ReactDOM.render(
+    <AppContainer>
+      <App />
+    </AppContainer>,
+    rootEl
+  )
+}
+
+if (process.env.NODE_ENV !== "production") {
+  overrideComponentTypeChecker((classType, reactElement) => (
+    reactElement && (
+      reactElement.type === classType ||
+      reactElement.type.name === classType.displayName
+    )
+  ))
+  if (module.hot) {
+    module.hot.accept("../AppRouter/index", render)
   }
-})
-
-import {module} from "@hot"
-export const _state = module ? module._state : {}
-// Initialize the router and begin the application
-let container = document.getElementById("atomic-app")
-export let component = ReactDom.render(<RenderForcer />, container)
-
-export function __unload() {
-  ReactDom.unmountComponentAtNode(container)
 }
 
-if (module) {
-  console.log("MODULE: ", module)
-  component.setState(module.component.state)
-}
+render()
